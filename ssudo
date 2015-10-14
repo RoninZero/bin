@@ -1,0 +1,16 @@
+#!/bin/sh
+
+MYDISPLAY="$DISPLAY"
+MYSCREEN="`echo $MYDISPLAY | sed 's/.*://' | sed 's/\..*$//'`"
+MYXAUTH="`xauth list | egrep ":${MYSCREEN}" | sed 's/^.*://'`"
+
+#echo
+#echo "-----------------------------------------------------------------------"
+#echo "Copy and paste following post-sudo to forward X through the ssh tunnel."
+#echo "-----------------------------------------------------------------------"
+echo "export DISPLAY=${MYDISPLAY}"
+echo "xauth add :${MYXAUTH}"
+#echo "-----------------------------------------------------------------------"
+
+exec /usr/bin/sudo -i
+
