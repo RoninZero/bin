@@ -3,9 +3,14 @@
 # screen -c {screenrc} running.
 # set -x
 
+# I run these with aliases eg.
+# alias scm='~/bin/screener.sh mutt'
+# alias sct='~/bin/screener.sh terms'
+
+
 SCREEN_NAME=$1
 SCREENRC=~/screen/$SCREEN_NAME
-SCREENRC_LIST="mutt terms"
+SCREENRC_LIST="mutt terms tdd-python"
 
 usage () {
     echo "Usage"
