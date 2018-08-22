@@ -16,55 +16,19 @@ e_header "I am a sample script"
 #set -x
 #end_spinner "rpm -qa &> /dev/null" "Currently running this crap ->   "
 eol_spinner "sleep 5" "Currently running this crap ->   "
-e_bold "done"
-#
+e_bold "eol_spinner done"
+##
 bol_spinner "sleep 5" "Currently running this new crap ->   "
-e_bold "done"
-
-oscillator "sleep 5" "This is a test message"
+e_bold "bol_spinner done"
+#
+bol_arrow_spinner "sleep 5" "Currently running this new crap ->   "
+e_bold "bol_arrow_spinner done"
+#
+oscillator "sleep 5" "This is a oscillator message"
 e_bold "oscillator done!"
-
-#seek_confirmation "Do you want to print a success message?"
-#if is_confirmed; then
-#  e_success "Here is a success message"
-#else
-#  e_error "You did not ask for a success message"
-#fi
 #
-#magenta1=$(tput setaf 9)
-#orange1=$(tput setaf 172)
-#green1=$(tput setaf 190)
-#purple1=$(tput setaf 141)
-#white1=$(tput setaf 256)
-#
-#magenta2=$(tput setaf 5)
-[dkemeza@fahad-1 bash-testing]$ ^more^cat
-cat test.sh 
-#!/bin/bash
-
-source functions.sh
-
-e_header "I am a sample script"
-e_success "I am a success message"
-e_error "I am an error message"
-e_warning "I am a warning message"
-e_underline "I am underlined text"
-e_bold "I am bold text"
-e_note "I am a note"
-
-
-e_header "I am a sample script"
-
-#set -x
-#end_spinner "rpm -qa &> /dev/null" "Currently running this crap ->   "
-eol_spinner "sleep 5" "Currently running this crap ->   "
-e_bold "done"
-#
-bol_spinner "sleep 5" "Currently running this new crap ->   "
-e_bold "done"
-
-oscillator "sleep 5" "This is a test message"
-e_bold "oscillator done!"
+waver "sleep 5" "This is a waver message"
+e_bold "waver done!"
 
 #seek_confirmation "Do you want to print a success message?"
 #if is_confirmed; then
