@@ -42,6 +42,8 @@ tan=$(tput setaf 3)
 blue=$(tput setaf 38)
 
 ceol=$(tput el)
+cur_ivis=$(tput civis)
+cur_norm=$(tput cnorm)
 #
 # Headers and  Logging
 #
@@ -70,6 +72,7 @@ eol_spinner() {
     pid=$!
     i=1
     sp="/-\|"
+    echo -ne $cur_ivis
     echo -n ' '
     echo -ne "${msg} ${prog}...  "
     while [ -d /proc/$pid ]
@@ -78,6 +81,7 @@ eol_spinner() {
       sleep .1
     done
     printf "\r${ceol}"
+    echo -ne $cur_norm
 }
 
 bol_spinner() {
@@ -87,6 +91,7 @@ bol_spinner() {
     pid=$!
     i=1
     sp="/-\|"
+    echo -ne $cur_ivis
     echo -n ' '
     echo -ne "  ${msg} ${prog}..."
     while [ -d /proc/$pid ]
@@ -95,6 +100,27 @@ bol_spinner() {
       sleep .1
     done
     printf "\r${ceol}"
+    echo -ne $cur_norm
+}
+
+bol_arrow_spinner() {
+    prog=$1
+    msg=$2
+    ${prog} &
+    pid=$!
+    i=1
+    #sp="⇐⇖⇑⇗⇒⇘⇓⇙"
+    sp="←↖↑↗→↘↓↙"
+    echo -ne $cur_ivis
+    echo -n ' '
+    echo -ne "  ${msg} ${prog}..."
+    while [ -d /proc/$pid ]
+    do
+      printf "\r\b${sp:i++%${#sp}:1}"
+      sleep .1
+    done
+    printf "\r${ceol}"
+    echo -ne $cur_norm
 }
 
 oscillator() {
@@ -106,12 +132,13 @@ oscillator() {
     id="inc" #increment or decrement
     s=("*      " "**     " "***    " " ***   " "  ***  " "   *** " "    ***" "     **" "      *")
     max_len=${#s[@]}
+    end_stop=$(( max_len - 1 ))
 
+  echo -ne $cur_ivis
   while [ -d /proc/$pid ]; do
     if [ $id == "inc" ]; then
       echo -ne "\r[${s[i]}]   ${msg}  "
       (( i++ ))
-      #if [[ $i -ge ${#s[@]} ]]; then
       if [ $i -ge $(( max_len - 1 )) ]; then
         id="dec"
       fi
@@ -127,8 +154,32 @@ oscillator() {
     fi
     sleep .1
   done
+  echo -ne $cur_norm
   printf "\r${ceol}"
 }
+
+
+waver() {
+    prog=$1
+    msg=$2
+    ${prog} &
+    pid=$!
+    i=0
+    #s=("_.-^-._" ".-^-._." "-^-._.-" "^-._.-^" "-._.-^-" "._.-^-.")
+    #s=("\"\`-._,-'" "\`-._,-'\"" "-._,-'\"\`" "._,-'\"\`-" "_,-'\"\`-." ",-'\"\`-._" "-'\"\`-._," "'\"\`-._,-")
+    s=("▂▃▅▇█▓▒░▒▓█▇▅▃" "▃▅▇█▓▒░▒▓█▇▅▃▂" "▅▇█▓▒░▒▓█▇▅▃▂▃" "▇█▓▒░▒▓█▇▅▃▂▃▅" "█▓▒░▒▓█▇▅▃▂▃▅▇" "▓▒░▒▓█▇▅▃▂▃▅▇█" "▒░▒▓█▇▅▃▂▃▅▇█▓" "░▒▓█▇▅▃▂▃▅▇█▓▒" "▒▓█▇▅▃▂▃▅▇█▓▒░" "▓█▇▅▃▂▃▅▇█▓▒░▒" "█▇▅▃▂▃▅▇█▓▒░▒▓" "▇▅▃▂▃▅▇█▓▒░▒▓█" "▅▃▂▃▅▇█▓▒░▒▓█▇" "▃▂▃▅▇█▓▒░▒▓█▇▅")
+    max_len=${#s[@]}
+  echo -ne $cur_ivis
+  while [ -d /proc/$pid ]; do
+    (( x = i % max_len ))
+    echo -ne "\r[${s[x]}]   ${msg}  "
+    (( i++ ))
+    sleep .1
+  done
+  printf "\r${ceol}"
+  echo -ne $cur_norm
+}
+
 
 seek_confirmation() {
   printf "\n${bold}$@${reset}"
